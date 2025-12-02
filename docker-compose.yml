@@ -1,0 +1,14 @@
+services:
+  whanjeab:
+    build: .
+    restart: always
+    ports:
+      - "3015:3001"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - dev_network
+
+networks:
+  dev_network:
+    external: true
