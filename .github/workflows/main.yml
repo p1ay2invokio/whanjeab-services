@@ -1,0 +1,31 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]   # รันเมื่อ push เข้าสาขา main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install sshpass
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass
+        # sshpass = ตัวช่วยให้เราส่งรหัสผ่านเข้า ssh ผ่าน command ได้
+
+      - name: Pull code on server
+        run: |
+          sshpass -p "${{ secrets.SERVER_PASSWORD }}" \
+          ssh -o StrictHostKeyChecking=no \
+          ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
+          "echo \"${{ secrets.SERVER_PASSWORD }}\" | sudo -S bash -c 'cd /path/to/whanjeab-services && git pull'"
+        # sshpass -p "PASSWORD"
+        #   → ใส่รหัสผ่านจาก GitHub Secrets
+        #
+        # ssh ... "คำสั่ง"
+        #   → ssh เข้าเครื่อง server แล้วรันคำสั่งข้างใน
+        #
+        # cd /path/to/project && git pull
+        #   → เข้าโฟลเดอร์โปรเจคบน server แล้ว git pull
