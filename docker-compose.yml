@@ -2,6 +2,8 @@ services:
   whanjeab:
     build: .
     restart: always
+    environment:
+      - DATABASE_URL="postgresql://play2:21947@localhost:5432/whanjeabdb?schema=public"
     ports:
       - "3015:3001"
     volumes:

@@ -33,7 +33,7 @@ const updateRequest = async (api_key: string) => {
                 request: userData?.User.request + 1
             }
         })
-    }else{
+    } else {
         console.log("PASS!")
     }
 }
@@ -63,36 +63,43 @@ const pushNotify = async (api_key: string, channel_access: string, to: string, m
 
 }
 
+const getGroupId = async (channel_access: string, to: string, message: string) => {
+    let test = await axios.post(`https://api.line.me/v2/bot/message/push`, {
+        to: to,
+        messages: [
+            {
+                type: 'text',
+                text: "userId / groupId : " + message
+            }
+        ]
+    }, {
+        headers: {
+            Authorization: `Bearer ${channel_access}`,
+            "Content-Type": 'application/json'
+        }
+    }).then((res) => {
+        return res.data
+    }).catch((err: AxiosError) => {
+        return err.response?.data
+    })
+
+    return test
+
+}
+
 app.post('/webhook', async (req, res) => {
 
     const events = req.body.events
 
-    if (events[0].message.text == "-getid") {
+    if (events[0].message.type.length == 172) {
         if (events[0].source.groupId) {
-            pushNotify('', '/OnNiDtxqCLBupWvspkf8bbgRadK+r1T1M/2DZW2mlKOTcQHodKZPtL56KOI7O64nUaD82rdKYHUrkLJY/CcF3p+qAy+T71xltTZRA0JqtBvStp8OHaaLYeYATwA0xGjGpGBI8OkbwtXyQdoL6ASIAdB04t89/1O/w1cDnyilFU=', events[0].source.groupId, events[0].source.groupId)
+            getGroupId(events[0].message.text, events[0].source.groupId, events[0].source.groupId)
         }
     }
 
     console.log(events)
 
     res.status(200).send()
-})
-
-app.post('/user', async (req, res) => {
-
-    let { channel_access } = req.body
-
-    let response = await axios.get("https://api.line.me/v2/bot/channel/webhook/endpoint", {
-        headers: {
-            Authorization: `Bearer ${channel_access}`,
-            "Content-Type": 'application/json'
-        }
-    })
-
-    console.log(response.data)
-
-    res.status(200).send()
-
 })
 
 app.post('/push', async (req, res) => {
