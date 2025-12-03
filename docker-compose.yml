@@ -3,7 +3,7 @@ services:
     build: .
     restart: always
     environment:
-      - DATABASE_URL="postgresql://play2:123456@localhost:5432/whanjeabdb?schema=public"
+      - DATABASE_URL="postgresql://play2:123456@db:5432/whanjeabdb?schema=public"
     ports:
       - "3015:3001"
     volumes:
