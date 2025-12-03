@@ -5,7 +5,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://play2:123456@db:5432/whanjeabdb?schema=public
       - PORT=3015
-    command: sh -c "npx prisma generate && npm start"
+    command: sh -c "npx prisma migrate deploy && npx prisma generate && npm start"
     ports:
       - "3015:3001"
     volumes:
