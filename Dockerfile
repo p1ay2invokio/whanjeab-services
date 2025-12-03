@@ -16,7 +16,7 @@ COPY . .
 # เปิด Port ที่แอปพลิเคชันจะรัน (เช่น 3000)
 EXPOSE 3001
 
-RUN "npx prisma generate"
+RUN npx prisma generate
 
 # คำสั่งเริ่มต้นเมื่อ Container รัน (สำหรับ Dev แนะนำ npm run dev)
 CMD ["npm", "start"]
