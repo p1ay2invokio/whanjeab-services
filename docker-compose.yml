@@ -14,3 +14,7 @@ services:
 networks:
   dev_network:
     external: true
+
+
+volumes:
+  db_data:
