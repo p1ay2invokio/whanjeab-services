@@ -1,5 +1,6 @@
 services:
-  whanjeab:
+  whanjeab-line:
+    container_name: whanjeab-line
     build: .
     restart: always
     environment:
